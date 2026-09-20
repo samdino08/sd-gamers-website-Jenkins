@@ -5,7 +5,7 @@
 window.PL = window.PL || {};
 
 PL.SITE = {
-  name: 'PitchLine',
+  name: 'Gamers Gangbang',
   tagline: 'The PS4 football squad hub',
   flagship: 'fc24'
 };
