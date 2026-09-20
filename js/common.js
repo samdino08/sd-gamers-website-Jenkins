@@ -144,35 +144,47 @@
   function at(dayOffset, hour, minute) {
     const d = new Date(); d.setDate(d.getDate() + dayOffset); d.setHours(hour, minute || 0, 0, 0); return d.getTime();
   }
-  function ids(list) { return list.map(function (i) { return 'p' + i; }); }
+  function ids(list) { return list.filter(function (i) { return i <= PL.SEED_PLAYERS.length; }).map(function (i) { return 'p' + i; }); }
+  function H(i) { return i <= PL.SEED_PLAYERS.length ? 'p' + i : 'p1'; }
   function seedEvents() {
     return [
       { id: 'e1', title: 'Friday Night Knockout', game: 'fc24', mode: 'knockout', start: at(2, 20, 0), duration: 120, max: 16,
-        host: 'p1', signups: ids([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]),
+        host: H(1), signups: ids([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]),
         desc: 'Single-elimination FIFA 24 bracket. Seeded by rating. Bring your best 11 and your best sportsmanship.' },
       { id: 'e2', title: 'Weekend League Warm-up', game: 'fc24', mode: 'league', start: at(1, 21, 0), duration: 90, max: 10,
-        host: 'p4', signups: ids([4, 1, 5, 7, 8, 9, 3]),
+        host: H(4), signups: ids([4, 1, 5, 7, 8, 9, 3]),
         desc: 'Round-robin warm-up matches before the weekend. Short halves, no pressure.' },
       { id: 'e3', title: 'Pro Clubs Practice: 11v11', game: 'fc24', mode: 'teams', start: at(4, 19, 30), duration: 120, max: 22,
-        host: 'p6', signups: ids([6, 2, 10, 5, 9, 12, 8]),
+        host: H(6), signups: ids([6, 2, 10, 5, 9, 12, 8]),
         desc: 'Team practice for Pro Clubs. Teams are balanced automatically by rating.' },
       { id: 'e4', title: 'Rocket League 3v3 Night', game: 'rocketleague', mode: 'teams', start: at(3, 21, 0), duration: 90, max: 12,
-        host: 'p7', signups: ids([7, 1, 3, 9, 11]),
+        host: H(7), signups: ids([7, 1, 3, 9, 11]),
         desc: 'A break from football with rocket-powered cars. All skill levels welcome.' },
       { id: 'e5', title: 'Mortal Kombat Ladder', game: 'mk11', mode: 'knockout', start: at(8, 20, 30), duration: 90, max: 8,
-        host: 'p3', signups: ids([3, 7, 1, 4, 5, 8, 9, 11]),
+        host: H(3), signups: ids([3, 7, 1, 4, 5, 8, 9, 11]),
         desc: 'Best-of-three bracket. Full, but you can leave to open a spot for a friend.' },
       { id: 'e6', title: 'Fall Guys Party Sunday', game: 'fallguys', mode: 'casual', start: at(6, 18, 0), duration: 60, max: 60,
-        host: 'p6', signups: ids([6, 10, 12, 9, 2]),
+        host: H(6), signups: ids([6, 10, 12, 9, 2]),
         desc: 'Relaxed party session. Join a lobby together and cheer each other on.' },
       { id: 'e7', title: 'Season Opener Cup', game: 'fc24', mode: 'knockout', start: at(-3, 20, 0), duration: 120, max: 8,
-        host: 'p1', signups: ids([1, 2, 3, 4, 5, 6, 7, 8]),
+        host: H(1), signups: ids([1, 2, 3, 4, 5, 6, 7, 8]),
         desc: 'Last week\u2019s cup. Thanks to everyone who played.' }
     ];
   }
+  let eventsSynced = false;
   PL.getEvents = function () {
     let list = read(KEY.events, null);
-    if (!Array.isArray(list) || !list.length) { list = seedEvents(); write(KEY.events, list); }
+    if (!Array.isArray(list) || !list.length) { list = seedEvents(); eventsSynced = true; write(KEY.events, list); }
+    else if (!eventsSynced) {
+      /* drop sign-ups and hosts for players that no longer exist */
+      const valid = {}, all = PL.getPlayers();
+      all.forEach(function (p) { valid[p.id] = true; });
+      list.forEach(function (e) {
+        e.signups = e.signups.filter(function (id) { return valid[id]; });
+        if (!valid[e.host]) e.host = e.signups[0] || (all[0] && all[0].id) || e.host;
+      });
+      eventsSynced = true; write(KEY.events, list);
+    }
     return list;
   };
   PL.saveEvents = function (list) { write(KEY.events, list); };
