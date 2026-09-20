@@ -13,7 +13,7 @@ PL.SITE = {
 
 /* 2) HOMEPAGE CONTENT: edit any text below and save. Leave a value as '' or null to keep the default. */
 PL.HOME = {
-  heroTitle: 'Get ready for a gaming gangbang on game nights!!',
+  heroTitle: 'Get ready for a gangbang on game nights',
   heroLead: 'Build a FIFA 24 player profile with real stats and community ratings, schedule match nights for the whole squad, and find the best multiplayer games on PS4.',
   primaryButton: { text: 'Create your profile', href: 'players.html#new' },
   secondaryButton: { text: 'See upcoming events', href: 'events.html' },
