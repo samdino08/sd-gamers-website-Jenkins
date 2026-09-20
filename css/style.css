@@ -349,3 +349,6 @@ dialog::backdrop { background: rgba(3, 5, 12, 0.72); backdrop-filter: blur(6px);
 .form h2 { padding-right: 3rem; }
 @media (max-width: 40rem) { .pf-head { padding-right: 1.2rem; padding-top: 3rem; } .ed-head { padding-top: 2.6rem; } }
 @media (max-width: 40rem) { .pf-av { width: 5rem; height: 5rem; } .pf-head { gap: 0.9rem; } .pf-id h2 { font-size: 1.9rem; } }
+
+.av-stack { position: relative; display: block; width: 100%; height: 100%; }
+.av-over { position: absolute; inset: 0; }
