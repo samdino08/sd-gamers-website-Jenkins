@@ -6,14 +6,14 @@ window.PL = window.PL || {};
 
 /* 1) SITE NAME: change 'name' and it updates the header, footer, page titles and calendar files. */
 PL.SITE = {
-  name: 'PitchLine',
+  name: 'Gamers Gangbang',
   tagline: 'The PS4 football squad hub',
   flagship: 'fc24'
 };
 
 /* 2) HOMEPAGE CONTENT: edit any text below and save. Leave a value as '' or null to keep the default. */
 PL.HOME = {
-  heroTitle: 'Your squad. Your numbers. Your kick-off.',
+  heroTitle: 'Get ready for gangbang on the game night!!',
   heroLead: 'Build a FIFA 24 player profile with real stats and community ratings, schedule match nights for the whole squad, and find the best multiplayer games on PS4.',
   primaryButton: { text: 'Create your profile', href: 'players.html#new' },
   secondaryButton: { text: 'See upcoming events', href: 'events.html' },
