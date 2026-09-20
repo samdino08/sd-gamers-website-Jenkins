@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PitchLine - The PS4 football squad hub</title>
+  <meta name="description" content="Player profiles, ratings, stats and match-night scheduling for FIFA 24 on PS4.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="home">
+  <header id="site-header" class="site-header"></header>
+
+  <main id="main">
+    <section class="hero">
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1>Your squad. Your numbers. Your kick-off.</h1>
+          <p class="lead">Build a FIFA 24 player profile with real stats and community ratings, schedule match nights for the whole squad, and find the best multiplayer games on PS4.</p>
+          <div class="hero-cta">
+            <a class="btn btn-big" href="players.html#new">Create your profile</a>
+            <a class="btn btn-big btn-ghost" href="events.html">See upcoming events</a>
+          </div>
+          <dl class="hero-stats">
+            <div><dt>Players</dt><dd id="stat-players" data-count="0">0</dd></div>
+            <div><dt>Upcoming events</dt><dd id="stat-events" data-count="0">0</dd></div>
+            <div><dt>Matches logged</dt><dd id="stat-matches" data-count="0">0</dd></div>
+          </dl>
+        </div>
+        <div class="hero-showcase">
+          <div id="hero-card"></div>
+          <p id="hero-card-caption" class="caption"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-head"><h2>Top rated players</h2><a href="players.html">See all players</a></div>
+      <div class="card-grid" id="top-players"></div>
+    </section>
+
+    <section class="section container">
+      <div class="section-head"><h2>Next match nights</h2><a href="events.html">Open the schedule</a></div>
+      <div class="mini-grid" id="next-events"></div>
+    </section>
+
+    <section class="section container">
+      <div class="section-head"><h2>Multiplayer on PS4</h2><a href="games.html">Browse all games</a></div>
+      <div class="game-grid" id="game-strip"></div>
+    </section>
+
+    <section class="section container cta">
+      <h2>Ready for your first match night?</h2>
+      <p>Add your profile in a minute, pick a game, and invite the squad.</p>
+      <a class="btn btn-big" href="players.html#new">Join the squad</a>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

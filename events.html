@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Events - PitchLine</title>
+  <meta name="description" content="Schedule FIFA 24 and PS4 multiplayer events for your squad.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="events">
+  <header id="site-header" class="site-header"></header>
+
+  <main id="main">
+    <section class="page-head container">
+      <h1>Events</h1>
+      <p class="lead">Match nights, knockouts and party sessions with room for a whole squad. Join with one tap and add it to your calendar.</p>
+      <button type="button" class="btn btn-big" data-open-new>Schedule an event</button>
+    </section>
+
+    <section class="container events-layout">
+      <div class="events-main">
+        <div class="list-head">
+          <h2 id="list-heading">Upcoming events</h2>
+          <button type="button" class="linkbtn" id="clear-day" hidden>Show all events</button>
+        </div>
+        <div class="chips" id="event-filters" role="group" aria-label="Filter events"></div>
+        <div class="event-list" id="event-list"></div>
+      </div>
+      <aside class="events-side" aria-label="Calendar">
+        <div class="cal-head">
+          <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">&lsaquo;</button>
+          <h2 id="cal-title"></h2>
+          <button type="button" class="cal-nav" id="cal-next" aria-label="Next month">&rsaquo;</button>
+        </div>
+        <div id="calendar"></div>
+        <p class="hint">Tap a day to see its events. Dots are coloured by game.</p>
+      </aside>
+    </section>
+  </main>
+
+  <dialog id="event-dialog" aria-labelledby="ed-title">
+    <button type="button" class="dlg-x" data-close aria-label="Close event">&times;</button>
+    <div id="event-body"></div>
+  </dialog>
+
+  <dialog id="new-dialog" aria-labelledby="new-title">
+    <button type="button" class="dlg-x" data-close aria-label="Close form">&times;</button>
+    <form id="new-form" class="form" novalidate>
+      <h2 id="new-title">Schedule an event</h2>
+      <p id="new-hint" class="hint" hidden>Pick who you are under "Playing as" in the header first. You will be listed as the host.</p>
+      <label>Event title <input name="title" type="text" maxlength="60" required placeholder="e.g. Sunday Cup"></label>
+      <div class="form-cols">
+        <label>Game <select name="game" id="ev-game"></select></label>
+        <label>Format <select name="mode" id="ev-mode"></select></label>
+      </div>
+      <div class="form-cols">
+        <label>Start <input name="start" type="datetime-local" required></label>
+        <label>Length (minutes) <input name="duration" type="number" min="15" max="480" step="15" value="90"></label>
+      </div>
+      <label>Max players <input name="max" type="number" min="2" max="64" value="16"></label>
+      <label>Details <textarea name="desc" rows="3" maxlength="300" placeholder="Rules, team size, anything players should know"></textarea></label>
+      <p id="new-error" class="status error" role="alert" hidden></p>
+      <div class="form-actions"><button type="submit" class="btn btn-big">Publish event</button><button type="button" class="btn btn-ghost" data-close>Cancel</button></div>
+    </form>
+  </dialog>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/events.js"></script>
+</body>
+</html>

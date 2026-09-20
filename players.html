@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Players - PitchLine</title>
+  <meta name="description" content="Browse FIFA 24 player profiles with ratings and stats.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;1,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="players">
+  <header id="site-header" class="site-header"></header>
+
+  <main id="main">
+    <section class="page-head container">
+      <h1>Players</h1>
+      <p class="lead">Every profile has an overall rating, a skill radar, a match record and community ratings. Tap a card to open it.</p>
+      <div class="toolbar">
+        <label class="search"><span class="sr-only">Search players</span><input id="search" type="search" placeholder="Search by PSN ID, name, country or club" autocomplete="off"></label>
+        <label class="select"><span>Sort by</span>
+          <select id="sort">
+            <option value="overall">Overall rating</option>
+            <option value="win">Win rate</option>
+            <option value="goals">Goals per game</option>
+            <option value="matches">Matches played</option>
+            <option value="community">Community rating</option>
+          </select>
+        </label>
+        <button type="button" class="btn" data-open-add>Add my profile</button>
+      </div>
+      <div class="chips" id="style-filters" role="group" aria-label="Filter by play style"></div>
+      <p id="result-count" class="count" role="status"></p>
+    </section>
+
+    <section class="container section-tight">
+      <div class="card-grid" id="player-grid"></div>
+    </section>
+  </main>
+
+  <dialog id="profile-dialog" aria-labelledby="pf-title">
+    <button type="button" class="dlg-x" data-close aria-label="Close profile">&times;</button>
+    <div id="profile-body"></div>
+  </dialog>
+
+  <dialog id="add-dialog" aria-labelledby="add-title">
+    <button type="button" class="dlg-x" data-close aria-label="Close form">&times;</button>
+    <form id="add-form" class="form" novalidate>
+      <h2 id="add-title">Add your profile</h2>
+      <p class="hint">Your profile is saved in this browser. Ratings from other players will build up over time.</p>
+
+      <div class="form-cols">
+        <div class="form-col">
+          <label>PSN ID <input name="tag" type="text" maxlength="16" required autocomplete="off" placeholder="e.g. Kick_Master"></label>
+          <label>Display name <input name="name" type="text" maxlength="40" autocomplete="name"></label>
+          <label>Country <input name="country" type="text" maxlength="40" autocomplete="country-name"></label>
+          <label>Favourite club <input name="club" type="text" maxlength="40"></label>
+          <label>Formation <select name="formation" id="formation"></select></label>
+          <label>Play style <select name="style" id="style"></select></label>
+          <label>When do you play? <input name="avail" type="text" maxlength="80" placeholder="e.g. Weeknights 8 to 11 pm"></label>
+        </div>
+        <div class="form-col">
+          <div class="photo-row">
+            <div id="photo-preview" class="photo-preview"><span>No photo</span></div>
+            <label class="file">Profile picture <input id="photo" type="file" accept="image/*"></label>
+          </div>
+          <fieldset><legend>Skills</legend>
+            <div id="attr-sliders" class="sliders"></div>
+            <p class="overall-line">Overall rating: <span id="overall-preview"></span></p>
+          </fieldset>
+        </div>
+      </div>
+
+      <fieldset><legend>Your FIFA 24 record</legend>
+        <div class="rec-grid">
+          <label>Matches <input name="played" type="number" min="0" max="99999" value="0"></label>
+          <label>Wins <input name="wins" type="number" min="0" max="99999" value="0"></label>
+          <label>Draws <input name="draws" type="number" min="0" max="99999" value="0"></label>
+          <label>Goals for <input name="gf" type="number" min="0" max="999999" value="0"></label>
+          <label>Goals against <input name="ga" type="number" min="0" max="999999" value="0"></label>
+          <label>Clean sheets <input name="cs" type="number" min="0" max="99999" value="0"></label>
+        </div>
+      </fieldset>
+
+      <label>About you <textarea name="bio" rows="3" maxlength="240" placeholder="A line or two about how you play"></textarea></label>
+
+      <p id="form-error" class="status error" role="alert" hidden></p>
+      <div class="form-actions"><button type="submit" class="btn btn-big">Save profile</button><button type="button" class="btn btn-ghost" data-close>Cancel</button></div>
+    </form>
+  </dialog>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/players.js"></script>
+</body>
+</html>
