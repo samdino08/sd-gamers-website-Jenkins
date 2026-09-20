@@ -124,7 +124,7 @@ PL.SEED_PLAYERS = [
     ratings: [3.2, 4.3, 4.0, 4.2], votes: 5, form: 'LLWDL', since: 2024, avail: 'Nights KST',
     bio: 'Just started competing. Looking for friendly matches to improve.' },
   /* ---- Added players. Edit the stats, country, club and bio below to match the real players. ---- */
-  { tag: 'Gurpal', photo: '', name: 'Gurpal', country: 'Not set', club: 'Free agent', formation: '4-3-3', style: 'Balanced',
+  { tag: 'Gurpal', photo: 'images/players/gurpal.jpg', name: 'Gurpal', country: 'Not set', club: 'Free agent', formation: '4-3-3', style: 'Balanced',
     attrs: [65, 65, 65, 65, 65, 65], p: 10, winPct: 50, drawPct: 20, gpg: 2.0, gapg: 2.0, cs: 1,
     ratings: [3.5, 3.5, 3.5, 3.5], votes: 0, form: '', since: 2024, avail: 'Not set',
     bio: 'New to the squad.' },
