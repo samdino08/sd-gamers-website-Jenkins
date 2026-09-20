@@ -75,15 +75,33 @@
       const ratings = {}; PL.RATING_KEYS.forEach(function (r, j) { ratings[r.k] = s.ratings[j]; });
       return {
         id: 'p' + (i + 1), tag: s.tag, name: s.name, country: s.country, club: s.club, formation: s.formation,
-        style: s.style, bio: s.bio, avail: s.avail, since: s.since, photo: null, custom: false,
+        style: s.style, bio: s.bio, avail: s.avail, since: s.since, photo: s.photo || null, custom: false,
         attrs: attrs, ratings: ratings, votes: s.votes, form: s.form.split(''),
         record: { p: s.p, w: w, d: d, l: s.p - w - d, gf: Math.round(s.gpg * s.p), ga: Math.round(s.gapg * s.p), cs: s.cs }
       };
     });
   }
+  /* Keep saved demo players in step with js/data.js (names, photos, stats), but keep any
+     community ratings visitors have added and keep every profile visitors created. */
+  const SYNC_FIELDS = ['tag', 'name', 'country', 'club', 'formation', 'style', 'bio', 'avail', 'since', 'photo', 'attrs', 'record', 'form'];
+  let synced = false;
+  function syncSeeds(list) {
+    const seeds = seedPlayers(), seedIds = {}, byId = {};
+    list.forEach(function (p) { byId[p.id] = p; });
+    seeds.forEach(function (s) {
+      seedIds[s.id] = true;
+      const cur = byId[s.id];
+      if (!cur) { list.push(s); return; }
+      if (cur.custom) return;
+      SYNC_FIELDS.forEach(function (k) { cur[k] = s[k]; });
+      if (!(cur.votes > s.votes)) { cur.ratings = s.ratings; cur.votes = s.votes; }
+    });
+    return list.filter(function (p) { return p.custom || seedIds[p.id]; });
+  }
   PL.getPlayers = function () {
     let list = read(KEY.players, null);
-    if (!Array.isArray(list) || !list.length) { list = seedPlayers(); write(KEY.players, list); }
+    if (!Array.isArray(list) || !list.length) { list = seedPlayers(); synced = true; write(KEY.players, list); }
+    else if (!synced) { list = syncSeeds(list); synced = true; write(KEY.players, list); }
     return list;
   };
   PL.savePlayers = function (list) { write(KEY.players, list); };
@@ -172,10 +190,18 @@
     for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
     return h >>> 0;
   }
+  function safePhoto(src) {
+    src = String(src || '');
+    if (src.indexOf('data:image/') === 0) return src;
+    return src.indexOf('..') === -1 && /^images\/[\w\-. ()\/]+\.(png|jpe?g|webp|gif|svg|avif)$/i.test(src) ? encodeURI(src) : '';
+  }
   PL.avatar = function (p) {
-    if (p.photo && String(p.photo).indexOf('data:image/') === 0) {
-      return '<img class="av-img" src="' + p.photo + '" alt="">';
-    }
+    const photo = safePhoto(p.photo);
+    const svg = PL.avatarSVG(p);
+    if (!photo) return svg;
+    return '<span class="av-stack">' + svg + '<img class="av-img av-over" src="' + photo + '" alt="" onerror="this.remove()"></span>';
+  };
+  PL.avatarSVG = function (p) {
     const h = hash(p.tag), h1 = h % 360, h2 = (h1 + 50 + (h >>> 8) % 90) % 360, v = (h >>> 4) % 3, id = 'av' + (++avSeq);
     const glow = 'hsl(' + h2 + ',100%,68%)';
     let visor;
@@ -369,6 +395,8 @@
   /* ============ header / footer ============ */
   PL.mountChrome = function () {
     const page = document.body.getAttribute('data-page') || '';
+    const pageTitle = document.body.getAttribute('data-title');
+    document.title = pageTitle ? pageTitle + ' - ' + PL.SITE.name : PL.SITE.name + ' - ' + PL.SITE.tagline;
     function link(href, key, label) { return '<a href="' + href + '"' + (page === key ? ' aria-current="page"' : '') + '>' + label + '</a>'; }
     const hd = document.getElementById('site-header');
     if (hd) hd.innerHTML =

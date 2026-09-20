@@ -10,18 +10,31 @@
 
     PL.heroCanvas(PL.$('#hero-canvas'));
 
+    /* text and choices from PL.HOME in js/data.js */
+    const H = PL.HOME || {};
+    function setText(sel, v) { const el = PL.$(sel); if (el && v) el.textContent = v; }
+    function setLink(sel, o) { const el = PL.$(sel); if (el && o) { if (o.text) el.textContent = o.text; if (o.href) el.setAttribute('href', o.href); } }
+    setText('#home-title', H.heroTitle); setText('#home-lead', H.heroLead);
+    setLink('#cta-primary', H.primaryButton); setLink('#cta-secondary', H.secondaryButton);
+    setText('#title-top', H.topPlayersTitle); setText('#title-events', H.eventsTitle); setText('#title-games', H.gamesTitle);
+    setText('#cta-title', H.ctaTitle); setText('#cta-text', H.ctaText);
+    if (H.ctaButton) PL.$('#cta-button').textContent = H.ctaButton;
+    const S = H.stats || {};
+    const stat = function (v, auto) { return (v === null || v === undefined || v === '') ? auto : v; };
+    const featured = (H.heroPlayer && players.filter(function (p) { return p.tag.toLowerCase() === String(H.heroPlayer).toLowerCase(); })[0]) || players[0];
+
     /* hero showcase card = current top-rated player */
-    PL.$('#hero-card').innerHTML = PL.playerCard(players[0], true);
-    PL.$('#hero-card-caption').textContent = 'Top rated this week: ' + players[0].tag;
+    PL.$('#hero-card').innerHTML = PL.playerCard(featured, true);
+    PL.$('#hero-card-caption').textContent = (featured === players[0] ? 'Top rated this week: ' : 'Featured player: ') + featured.tag;
 
     /* counters */
-    PL.$('#stat-players').setAttribute('data-count', players.length);
-    PL.$('#stat-events').setAttribute('data-count', events.length);
-    PL.$('#stat-matches').setAttribute('data-count', totalMatches);
+    PL.$('#stat-players').setAttribute('data-count', stat(S.players, players.length));
+    PL.$('#stat-events').setAttribute('data-count', stat(S.events, events.length));
+    PL.$('#stat-matches').setAttribute('data-count', stat(S.matches, totalMatches));
     PL.animateCounters(document);
 
     /* top players */
-    PL.$('#top-players').innerHTML = players.slice(0, 4).map(function (p) { return PL.playerCard(p); }).join('');
+    PL.$('#top-players').innerHTML = players.slice(0, Math.max(1, Math.min(H.topPlayersCount || 4, players.length))).map(function (p) { return PL.playerCard(p); }).join('');
 
     /* next events */
     PL.$('#next-events').innerHTML = events.slice(0, 3).map(function (e) {
@@ -36,7 +49,8 @@
     }).join('');
 
     /* games strip */
-    PL.$('#game-strip').innerHTML = PL.GAMES.slice(0, 4).map(function (g) { return PL.gameCard(g); }).join('');
+    const wanted = (H.featuredGames || []).map(function (id) { return PL.GAMES.filter(function (g) { return g.id === id; })[0]; }).filter(Boolean);
+    PL.$('#game-strip').innerHTML = (wanted.length ? wanted : PL.GAMES.slice(0, 4)).map(function (g) { return PL.gameCard(g); }).join('');
 
     /* player cards open their profile on the players page */
     document.addEventListener('click', function (e) {
